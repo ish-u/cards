@@ -9,8 +9,6 @@ export default async function handler(
     method,
   } = req;
 
-  console.log(q);
-
   if (method === "GET" && q != "") {
     // fetch access token
     var tokenResponse = await fetch("https://accounts.spotify.com/api/token", {

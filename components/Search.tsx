@@ -48,6 +48,7 @@ const Search = () => {
               width="96"
               className="w-1/3"
               src={track?.album?.images[0].url}
+              alt={track?.name}
             ></Image>
 
             <div className="ml-8 w-2/3">

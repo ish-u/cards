@@ -17,7 +17,7 @@ const Song = ({ name, artist, img, url }: songData) => {
         <meta name={name} content={`| ${artist}`} />
         <link rel="icon" href={img} />
       </Head>
-      <MarqueeBackground  name={name} artist={artist} />
+      <MarqueeBackground name={name} artist={artist} />
       <div className="text-white flex flex-row h-5/6 justify-center">
         <div className="w-2/5 flex flex-col items-center justify-center">
           <Image
@@ -39,12 +39,13 @@ const Song = ({ name, artist, img, url }: songData) => {
           className="absolute bottom-8 drop-shadow-xl text-lg flex flex-row items-center justify-center align-middle px-4 py-2 my-2 bg-black rounded-full"
           href={url}
         >
-          <img
+          <Image
             height="32px"
             width="32px"
             className="mr-2"
             src="/Spotify_Icon_RGB_Green.png"
-          ></img>
+            alt="Spotify Logo"
+          ></Image>
           <span className="font-thin">Open on Spotify</span>
         </a>
       </div>
