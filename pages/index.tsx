@@ -1,39 +1,16 @@
 import type { NextPage } from "next";
 import Head from "next/head";
-import Link from "next/link";
-
+import API from "../components/API";
+import Search from "../components/Search";
 const Home: NextPage = () => {
   return (
-    <div className="h-screen">
+    <div className="px-12">
       <Head>
         <title>cards</title>
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <div className="w-screen h-96 flex flex-col align-middle justify-center items-center">
-        <div>
-          <h1 className="text-5xl  font-mono underlined">
-            go to /song/:SpotifyTrackID
-          </h1>
-          <div className="flex flex-col pt-12">
-            <span className="text-xl font-bold">Examples</span>
-            <span className="font-mono pt-4 text-lg hover:underline">
-              <Link href="/song/1aOxOpH4AkGAd8OMrKjyNY">
-                /song/1aOxOpH4AkGAd8OMrKjyNY
-              </Link>
-            </span>
-            <span className="font-mono pt-4 text-lg hover:underline">
-              <Link href="/song/6drjmuBGalsmDjMSi7BFAP">
-                /song/6drjmuBGalsmDjMSi7BFAP
-              </Link>
-            </span>
-            <span className="font-mono pt-4 text-lg hover:underline">
-              <Link href="/song/7KVA9XflawdJaRBd1XYkJu">
-                /song/7KVA9XflawdJaRBd1XYkJu
-              </Link>
-            </span>
-          </div>
-        </div>
-      </div>
+      <Search />
+      <API />
     </div>
   );
 };

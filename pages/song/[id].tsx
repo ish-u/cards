@@ -1,7 +1,7 @@
 import Head from "next/head";
+import Image from "next/image";
 import { GetStaticProps } from "next";
-import Marquee from "react-fast-marquee";
-
+import MarqueeBackground from "../../components/MarqueeBackground";
 interface songData {
   name: string;
   artist: string;
@@ -17,38 +17,15 @@ const Song = ({ name, artist, img, url }: songData) => {
         <meta name={name} content={`| ${artist}`} />
         <link rel="icon" href={img} />
       </Head>
-      <div
-        style={{
-          position: "fixed",
-          left: 0,
-          // bottom: 0,
-          transform: "rotate(-40deg) scale(2)",
-        }}
-      >
-        {[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0].map((i) => (
-          <Marquee
-            key={i}
-            style={{
-              minWidth: "fit-content",
-            }}
-            gradient={false}
-            speed={100}
-            loop={0}
-          >
-            <h1 className="text-8xl pb-4 text-zinc-800/25">
-              {name} | {artist} | {name} | {artist} |
-            </h1>
-          </Marquee>
-        ))}
-      </div>
+      <MarqueeBackground name={name} artist={artist} />
       <div className="text-white flex flex-row h-5/6 justify-center">
         <div className="w-2/5 flex flex-col items-center justify-center">
-          <img
+          <Image
             height="360px"
             width="360px"
             className="my-4 rounded-xl drop-shadow-2xl"
             src={img}
-          ></img>
+          />
         </div>
         <div className="w-2/5 flex flex-col justify-center">
           <h1 className="text-6xl leading-snug font-sans font-bold my-2 drop-shadow-xl break-words">
@@ -74,52 +51,6 @@ const Song = ({ name, artist, img, url }: songData) => {
     </div>
   );
 };
-
-// export const getServerSideProps: GetServerSideProps = async (context) => {
-//   const id = context.params?.id;
-
-//   // fetch access token
-//   var res = await fetch("https://accounts.spotify.com/api/token", {
-//     method: "POST",
-//     headers: {
-//       "Content-Type": "application/x-www-form-urlencoded",
-//       Authorization:
-//         "Basic " +
-//         Buffer.from(
-//           process.env.CLIENT_ID + ":" + process.env.CLIENT_SECRET
-//         ).toString("base64"),
-//       Accept: "application/json",
-//     },
-//     body: new URLSearchParams({
-//       grant_type: "client_credentials",
-//     }).toString(),
-//   });
-//   const token = (await res.json())?.access_token;
-
-//   var res = await fetch(`https://api.spotify.com/v1/tracks/${id}`, {
-//     method: "GET",
-//     headers: {
-//       "Content-Type": "application/json",
-//       Authorization: "Bearer " + token,
-//       Accept: "application/json",
-//     },
-//   });
-
-//   const song = await res.json();
-
-//   console.log(song);
-
-//   const data: songData = {
-//     name: song?.name,
-//     artist: song?.artists[0]?.name,
-//     img: song?.album?.images[0]?.url,
-//     url: song?.external_urls?.spotify,
-//   };
-
-//   return {
-//     props: { ...data },
-//   };
-// };
 
 export const getStaticProps: GetStaticProps = async (context) => {
   const id = context.params?.id;
@@ -166,10 +97,6 @@ export const getStaticProps: GetStaticProps = async (context) => {
     props: {
       ...data,
     },
-    // Next.js will attempt to re-generate the page:
-    // - When a request comes in
-    // - At most once every 10 seconds
-    // revalidate: 10, // In seconds
   };
 };
 
