@@ -1,6 +1,6 @@
 import { useRouter } from "next/router";
 import Head from "next/head";
-import { GetServerSideProps } from "next";
+import { GetStaticProps, GetStaticPaths, GetServerSideProps } from "next";
 
 interface songData {
   name: string;
@@ -12,11 +12,10 @@ interface songData {
 const Song = ({ name, artist, img, url }: songData) => {
   const router = useRouter();
   const { id } = router.query;
-  console.log(url);
   return (
     <div className="h-screen w-screen ">
       <Head>
-        <title>{id}</title>
+        <title>{name + " | " + artist}</title>
         <meta name={name} content={`| ${artist}`} />
         <link rel="icon" href={img} />
       </Head>
@@ -46,7 +45,53 @@ const Song = ({ name, artist, img, url }: songData) => {
   );
 };
 
-export const getServerSideProps: GetServerSideProps = async (context) => {
+// export const getServerSideProps: GetServerSideProps = async (context) => {
+//   const id = context.params?.id;
+
+//   // fetch access token
+//   var res = await fetch("https://accounts.spotify.com/api/token", {
+//     method: "POST",
+//     headers: {
+//       "Content-Type": "application/x-www-form-urlencoded",
+//       Authorization:
+//         "Basic " +
+//         Buffer.from(
+//           process.env.CLIENT_ID + ":" + process.env.CLIENT_SECRET
+//         ).toString("base64"),
+//       Accept: "application/json",
+//     },
+//     body: new URLSearchParams({
+//       grant_type: "client_credentials",
+//     }).toString(),
+//   });
+//   const token = (await res.json())?.access_token;
+
+//   var res = await fetch(`https://api.spotify.com/v1/tracks/${id}`, {
+//     method: "GET",
+//     headers: {
+//       "Content-Type": "application/json",
+//       Authorization: "Bearer " + token,
+//       Accept: "application/json",
+//     },
+//   });
+
+//   const song = await res.json();
+
+//   console.log(song);
+
+//   const data: songData = {
+//     name: song?.name,
+//     artist: song?.artists[0]?.name,
+//     img: song?.album?.images[0]?.url,
+//     url: song?.external_urls?.spotify,
+//   };
+
+//   return {
+//     props: { ...data },
+//   };
+// };
+
+export const getStaticProps: GetStaticProps = async (context) => {
   const id = context.params?.id;
 
   // fetch access token
@@ -78,8 +123,6 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
 
   const song = await res.json();
 
-  console.log(song);
-
   const data: songData = {
     name: song?.name,
     artist: song?.artists[0]?.name,
@@ -87,8 +130,23 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
     url: song?.external_urls?.spotify,
   };
 
+  console.log(data);
+
   return {
-    props: { ...data },
+    props: {
+      ...data,
+    },
+    // Next.js will attempt to re-generate the page:
+    // - When a request comes in
+    // - At most once every 10 seconds
+    // revalidate: 10, // In seconds
+  };
+};
+
+export const getStaticPaths = () => {
+  return {
+    paths: [],
+    fallback: "blocking",
   };
 };
 
