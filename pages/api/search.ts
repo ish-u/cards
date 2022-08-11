@@ -1,21 +1,17 @@
 import type { NextApiRequest, NextApiResponse } from "next";
 
-type Data = {
-  name: string;
-};
-
 export default async function handler(
   req: NextApiRequest,
-  res: NextApiResponse<Data>
+  res: NextApiResponse<any>
 ) {
   const {
     query: { q },
     method,
   } = req;
 
-  console.log(q, method);
+  console.log(q);
 
-  if (method === "GET") {
+  if (method === "GET" && q != "") {
     // fetch access token
     var tokenResponse = await fetch("https://accounts.spotify.com/api/token", {
       method: "POST",
@@ -48,6 +44,10 @@ export default async function handler(
 
     const tracks = (await searchResponse.json()).tracks?.items;
 
-    res.status(200).json({ tracks });
+    if (tracks) {
+      return res.status(200).json({ tracks });
+    } else {
+    }
   }
+  res.status(200).json({ tracks: [] });
 }

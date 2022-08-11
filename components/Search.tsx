@@ -10,9 +10,10 @@ const Search = () => {
     };
     const res = await fetch(`/api/search?q=${query}`);
     const data = await res.json();
-    console.log(data);
     if (data?.tracks) {
       setTracks(data?.tracks);
+    } else {
+      setTracks([]);
     }
   };
 
@@ -36,7 +37,7 @@ const Search = () => {
         placeholder="Search Song"
       ></input>
       {tracks.map((track: any) => (
-        <Link href={`/song/${track.id}`} key={track?.id}>
+        <Link href={`/song/${track?.id}`} key={track?.id}>
           <div
             className="flex flex-row items-center align-middle
                       text-white m-2 p-4 hover:cursor-pointer 
