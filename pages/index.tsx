@@ -4,7 +4,7 @@ import Link from "next/link";
 
 const Home: NextPage = () => {
   return (
-    <div>
+    <div className="h-screen">
       <Head>
         <title>cards</title>
         <link rel="icon" href="/favicon.ico" />

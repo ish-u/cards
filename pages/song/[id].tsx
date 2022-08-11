@@ -1,6 +1,6 @@
-import { useRouter } from "next/router";
 import Head from "next/head";
-import { GetStaticProps, GetStaticPaths, GetServerSideProps } from "next";
+import { GetStaticProps } from "next";
+import Marquee from "react-fast-marquee";
 
 interface songData {
   name: string;
@@ -10,26 +10,56 @@ interface songData {
 }
 
 const Song = ({ name, artist, img, url }: songData) => {
-  const router = useRouter();
-  const { id } = router.query;
   return (
-    <div className="h-screen w-screen ">
+    <div className="h-screen w-screen">
       <Head>
         <title>{name + " | " + artist}</title>
         <meta name={name} content={`| ${artist}`} />
         <link rel="icon" href={img} />
       </Head>
-      <div className="text-white flex flex-col justify-center items-center h-5/6">
-        <img
-          height="360px"
-          width="360px"
-          className="my-4 rounded-xl drop-shadow-2xl"
-          src={img}
-        ></img>
-        <h1 className="text-6xl font-sans my-2 drop-shadow-xl">{name}</h1>
-        <h1 className="text-3xl font-thin my-2 drop-shadow-lg">{artist}</h1>
+      <div
+        style={{
+          position: "fixed",
+          left: 0,
+          // bottom: 0,
+          transform: "rotate(-40deg) scale(2)",
+        }}
+      >
+        {[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0].map((i) => (
+          <Marquee
+            key={i}
+            style={{
+              minWidth: "fit-content",
+            }}
+            gradient={false}
+            speed={100}
+            loop={0}
+          >
+            <h1 className="text-8xl pb-4 text-zinc-800/25">
+              {name} | {artist} | {name} | {artist} |
+            </h1>
+          </Marquee>
+        ))}
+      </div>
+      <div className="text-white flex flex-row h-5/6 justify-center">
+        <div className="w-2/5 flex flex-col items-center justify-center">
+          <img
+            height="360px"
+            width="360px"
+            className="my-4 rounded-xl drop-shadow-2xl"
+            src={img}
+          ></img>
+        </div>
+        <div className="w-2/5 flex flex-col justify-center">
+          <h1 className="text-6xl leading-snug font-sans font-bold my-2 drop-shadow-xl break-words">
+            {name}
+          </h1>
+          <h1 className="text-4xl font-thin my-2 drop-shadow-lg break-words">
+            - {artist}
+          </h1>
+        </div>
         <a
-          className="absolute bottom-4 drop-shadow-xl text-lg flex flex-row items-center justify-center align-middle px-4 py-2 my-2 bg-black rounded-full"
+          className="absolute bottom-8 drop-shadow-xl text-lg flex flex-row items-center justify-center align-middle px-4 py-2 my-2 bg-black rounded-full"
           href={url}
         >
           <img
