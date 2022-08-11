@@ -17,7 +17,7 @@ const Song = ({ name, artist, img, url }: songData) => {
         <meta name={name} content={`| ${artist}`} />
         <link rel="icon" href={img} />
       </Head>
-      <MarqueeBackground name={name} artist={artist} />
+      <MarqueeBackground  name={name} artist={artist} />
       <div className="text-white flex flex-row h-5/6 justify-center">
         <div className="w-2/5 flex flex-col items-center justify-center">
           <Image
