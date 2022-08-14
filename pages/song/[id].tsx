@@ -20,7 +20,7 @@ const Song = ({ name, artist, img, url, uri }: songData) => {
 
   const play = async (id: string, device_id: string) => {
     const response = await fetch(
-      `http://localhost:3000/api/play?id=${id}&device_id=${device_id}`,
+      `${process.env.NEXT_PUBLIC_API_URL}/play?id=${id}&device_id=${device_id}`,
       {
         method: "GET",
       }

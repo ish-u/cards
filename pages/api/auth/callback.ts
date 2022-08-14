@@ -23,7 +23,7 @@ export default async function handler(
       },
       body: new URLSearchParams({
         code: code as string,
-        redirect_uri: process.env.REDIRECT_URL as string,
+        redirect_uri: `${process.env.API_URL}/auth/callback` as string,
         grant_type: "authorization_code",
       }).toString(),
     });
