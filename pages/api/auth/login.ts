@@ -1,0 +1,27 @@
+import type { NextApiRequest, NextApiResponse } from "next";
+
+export default function handler(
+  req: NextApiRequest,
+  res: NextApiResponse<any>
+) {
+  const { method } = req;
+
+  if (method === "GET") {
+    var scope =
+      "streaming user-read-email user-read-private user-read-playback-state user-modify-playback-state";
+
+    var auth_query_parameters = new URLSearchParams({
+      response_type: "code",
+      client_id: process.env.CLIENT_ID,
+      scope: scope,
+      redirect_uri: "http://localhost:3000/api/auth/callback",
+    } as any);
+
+    res
+      .status(200)
+      .redirect(
+        "https://accounts.spotify.com/authorize/?" +
+          auth_query_parameters.toString()
+      );
+  }
+}
