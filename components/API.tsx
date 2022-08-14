@@ -2,9 +2,9 @@ import Link from "next/link";
 
 const API = () => {
   return (
-    <div className="p-8">
-      <h1 className="text-2xl font-bold mb-2">go to</h1>
-      <h1 className="text-4xl font-mono underlined break-words">
+    <div className="px-8 py-4">
+      <h1 className="text-xl sm:text-2xl font-bold mb-2">go to</h1>
+      <h1 className="text-2xl sm:text-4xl font-mono underlined break-words">
         /song/:SpotifyTrackID
       </h1>
       <div className="flex flex-col pt-6">

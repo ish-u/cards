@@ -25,10 +25,10 @@ const Search = () => {
   }, [query]);
 
   return (
-    <div className="flex flex-col p-8">
+    <div className="flex flex-col px-8 py-4">
       <span className="text-3xl font-bold">Search for a Song!</span>
       <input
-        className="rounded-lg px-4 py-2 my-4 w-96 font-mono text-xl outline-none focus:outline-none"
+        className="rounded-lg px-4 py-2 my-4 w-30 md:w-96 font-mono text-xl outline-none focus:outline-none"
         type="text"
         value={query}
         onChange={(e) => {
@@ -52,7 +52,7 @@ const Search = () => {
             ></Image>
 
             <div className="ml-8 w-2/3">
-              <h1 className="text-4xl">{track?.name}</h1>
+              <h1 className="text-xl sm:text-4xl">{track?.name}</h1>
               <h1 className="text-lg">{track?.artists[0].name}</h1>
             </div>
           </div>

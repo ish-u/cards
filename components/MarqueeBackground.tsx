@@ -11,12 +11,12 @@ const MarqueeBackground = ({
     <div
       style={{
         position: "fixed",
-        left: 0,
+        left: -1000,
         // bottom: 0,
         transform: "rotate(-40deg) scale(2)",
       }}
     >
-      {[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0].map((i) => (
+      {[0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12].map((i) => (
         <Marquee
           key={i}
           style={{
