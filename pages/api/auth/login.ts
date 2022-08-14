@@ -14,7 +14,7 @@ export default function handler(
       response_type: "code",
       client_id: process.env.CLIENT_ID,
       scope: scope,
-      redirect_uri: "http://localhost:3000/api/auth/callback",
+      redirect_uri: process.env.REDIRECT_URL as string,
     } as any);
 
     res
