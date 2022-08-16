@@ -25,9 +25,11 @@ const MarqueeBackground = ({
           gradient={false}
           speed={100}
           loop={0}
+          direction={i % 2 ? "left" : "right"}
         >
           <h1 className="text-8xl pb-4 text-zinc-800/25">
-            {name} | {artist} | {name} | {artist} |
+            {name} | {artist} | {name} | {artist} | {name} | {artist} | {name} |
+            {artist} | {name} | {artist} | {name} | {artist} |
           </h1>
         </Marquee>
       ))}

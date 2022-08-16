@@ -1,6 +1,7 @@
 import Head from "next/head";
 import { useContext, useEffect } from "react";
 import API from "../components/API";
+import GradientPicker from "../components/GradientPicker";
 import Search from "../components/Search";
 import { AppContext } from "../context/context";
 import { ActionType } from "../context/reducer";

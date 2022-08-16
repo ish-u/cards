@@ -3,6 +3,8 @@ export interface AppState {
   id: string;
   device_id: string;
   player: Spotify.Player | undefined;
+  startColor: string;
+  endColor: string;
 }
 
 export enum ActionType {
@@ -10,6 +12,7 @@ export enum ActionType {
   Change,
   Device,
   Player,
+  ChangeColor,
 }
 
 export interface Toggle {
@@ -32,7 +35,12 @@ export interface Player {
   payload: { player: Spotify.Player };
 }
 
-export type AppActions = Toggle | Change | Device | Player;
+export interface ChangeColor {
+  type: ActionType.ChangeColor;
+  payload: { startColor: string; endColor: string };
+}
+
+export type AppActions = Toggle | Change | Device | Player | ChangeColor;
 
 export const Reducer = (state: AppState, action: AppActions): AppState => {
   // console.log(state, action);
@@ -45,6 +53,12 @@ export const Reducer = (state: AppState, action: AppActions): AppState => {
       return { ...state, device_id: action.payload.device_id };
     case ActionType.Player:
       return { ...state, player: action.payload.player };
+    case ActionType.ChangeColor:
+      return {
+        ...state,
+        startColor: action.payload.startColor,
+        endColor: action.payload.endColor,
+      };
     default:
       return state;
   }

@@ -1,11 +1,5 @@
-import { NextPage } from "next";
-import React, {
-  createContext,
-  useReducer,
-  ReactNode,
-  ReactElement,
-} from "react";
-import { AppActions, Reducer } from "./reducer";
+import React, { createContext } from "react";
+import { AppActions } from "./reducer";
 import { AppState } from "./reducer";
 
 export const InitialState: AppState = {
@@ -13,6 +7,8 @@ export const InitialState: AppState = {
   id: "",
   device_id: "",
   player: undefined,
+  startColor: "#3b4371",
+  endColor: "#f3904f",
 };
 
 export const AppContext = createContext<{

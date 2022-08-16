@@ -2,7 +2,7 @@ import Head from "next/head";
 import Image from "next/image";
 import { GetStaticProps } from "next";
 import MarqueeBackground from "../../components/MarqueeBackground";
-import { useContext } from "react";
+import { useContext, useState } from "react";
 import { AppContext } from "../../context/context";
 import { ActionType } from "../../context/reducer";
 import { useEffect } from "react";
@@ -17,6 +17,9 @@ interface songData {
 
 const Song = ({ name, artist, img, url, uri }: songData) => {
   const { state, dispatch } = useContext(AppContext);
+
+  const [startColor, setStartColor] = useState("");
+  const [endColor, setEndcolor] = useState("");
 
   const play = async (id: string, device_id: string) => {
     const response = await fetch(
