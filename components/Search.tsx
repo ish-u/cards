@@ -26,9 +26,9 @@ const Search = () => {
 
   return (
     <div className="flex flex-col px-8 py-4">
-      <span className="text-3xl font-bold">Search for a Song!</span>
+      <span className="text-3xl font-bold mx-auto">Search for a Song!</span>
       <input
-        className="rounded-lg px-4 py-2 my-4 w-30 md:w-96 font-mono text-xl outline-none focus:outline-none"
+        className="rounded-lg px-4 py-2 my-4 w-30 md:w-2/5 text-xl outline-none focus:outline-none mx-auto"
         type="text"
         value={query}
         onChange={(e) => {

@@ -2,10 +2,10 @@ import React from "react";
 import Marquee from "react-fast-marquee";
 const MarqueeBackground = ({
   name,
-  artist,
+  artists,
 }: {
   name: string;
-  artist: string;
+  artists: { name: string; id: string }[];
 }) => {
   return (
     <div
@@ -28,8 +28,9 @@ const MarqueeBackground = ({
           direction={i % 2 ? "left" : "right"}
         >
           <h1 className="text-8xl pb-4 text-zinc-800/25">
-            {name} | {artist} | {name} | {artist} | {name} | {artist} | {name} |
-            {artist} | {name} | {artist} | {name} | {artist} |
+            <b>{name}</b> | {artists.map((artist) => artist.name).join(" | ")}
+            {" |  "}
+            <b>{name}</b> | {artists.map((artist) => artist.name).join(" | ")} |
           </h1>
         </Marquee>
       ))}

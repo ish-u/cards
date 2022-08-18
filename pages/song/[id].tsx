@@ -6,20 +6,36 @@ import { useContext, useState } from "react";
 import { AppContext } from "../../context/context";
 import { ActionType } from "../../context/reducer";
 import { useEffect } from "react";
+import { motion, useScroll } from "framer-motion";
 
 interface songData {
   name: string;
-  artist: string;
+  artists: {
+    name: string;
+    id: string;
+    img: string;
+  }[];
   img: string;
   url: string;
   uri: string;
+  album: {
+    name: string;
+    totalTracks: string;
+    trackNumber: string;
+    id: string;
+    releaseDate: string;
+  };
 }
 
-const Song = ({ name, artist, img, url, uri }: songData) => {
+const Song = ({ name, artists, img, url, uri, album }: songData) => {
+  const [showArtist, setShowArtist] = useState(false);
+  const { scrollY } = useScroll();
+
   const { state, dispatch } = useContext(AppContext);
 
-  const [startColor, setStartColor] = useState("");
-  const [endColor, setEndcolor] = useState("");
+  useEffect(() => {
+    setShowArtist(artists.length === 1);
+  }, []);
 
   const play = async (id: string, device_id: string) => {
     const response = await fetch(
@@ -50,44 +66,114 @@ const Song = ({ name, artist, img, url, uri }: songData) => {
   }, [state.id, state.device_id]);
 
   return (
-    <div className="h-screen w-screen">
+    <div className="h-full w-full">
       <Head>
-        <title>{name + " | " + artist}</title>
-        <meta name={name} content={`| ${artist}`} />
+        <title>
+          {name +
+            " | " +
+            artists
+              .map((artist) => {
+                return artist.name;
+              })
+              .join(" | ")}
+        </title>
+        <meta
+          name={name}
+          content={`| ${artists
+            .map((artist) => {
+              return artist.name;
+            })
+            .join(" | ")}`}
+        />
         <link rel="icon" href={img} />
       </Head>
-      <MarqueeBackground name={name} artist={artist} />
-      <div className="text-white flex flex-row h-5/6 justify-center">
-        <div className="w-2/5 flex flex-col items-center justify-center">
-          <Image
-            height="360px"
-            width="360px"
-            className="rounded-md drop-shadow-2xl"
-            src={img}
-            alt={name + artist}
-          />
+      <MarqueeBackground name={name} artists={artists} />
+      <div className="text-white flex flex-row h-screen w-screen justify-center flex-wrap">
+        <div className="w-full md:w-2/5 flex flex-col items-center justify-center">
+          <div className="fixed">
+            <motion.div
+              initial={{ scale: 1 }}
+              whileHover={{
+                scale: 1.2,
+              }}
+              whileTap={{
+                scale: 0.9,
+              }}
+            >
+              <Image
+                height="420px"
+                width="420px"
+                className="rounded-md drop-shadow-2xl"
+                src={img}
+                alt={name + artists.forEach((artist) => artist.name)}
+              />
+            </motion.div>
+            {/* <div className="absolute top-0 right-100 text-black ">
+              <div className="text-4xl text-bold">
+                #{album.trackNumber} / {album.totalTracks}
+              </div>
+              <div className="text-4xl text-bold">{album.name}</div>
+            </div> */}
+          </div>
         </div>
-        <div className="w-2/5 flex flex-col justify-center">
-          <h1 className="text-6xl leading-snug font-sans font-bold my-2 drop-shadow-xl break-words">
+        <div className="w-full md:w-2/5 flex flex-col justify-center">
+          <div
+            className="text-4xl md:text-6xl leading-snug md:leading-snug font-bold my-2 
+                         drop-shadow-xl break-words w-3/5 md:w-full m-auto"
+          >
             {name}
-          </h1>
-          <h1 className="text-xl md:text-4xl font-thin my-2 drop-shadow-lg break-words">
-            - {artist}
-          </h1>
+          </div>
+          <div className="text-xl md:text-2xl w-3/5 md:w-full justify-center md:justify-start font-thin my-2 drop-shadow-lg break-words flex flex-wrap">
+            {artists.map((artist) => {
+              return (
+                <motion.div
+                  key={artist.id}
+                  className={`flex ${
+                    showArtist &&
+                    "w-3/5 md:w-full justify-center md:justify-start"
+                  } my-2 mr-2`}
+                >
+                  <motion.div whileHover={{ scale: !showArtist ? 1.5 : 1 }}>
+                    <Image
+                      onClick={() => setShowArtist(!showArtist)}
+                      height="36px"
+                      width="36px"
+                      className="rounded-full drop-shadow-2xl"
+                      src={artist.img}
+                      alt={name + artists.forEach((artist) => artist.name)}
+                    />
+                  </motion.div>
+
+                  {showArtist && (
+                    <motion.div
+                      initial={{ opacity: 0 }}
+                      animate={{ opacity: 1 }}
+                      transition={{ ease: "linear" }}
+                      className="ml-2 handle"
+                    >
+                      <a href={`https://open.spotify.com/artist/${artist.id}`}>
+                        {artist.name}
+                      </a>
+                    </motion.div>
+                  )}
+                </motion.div>
+              );
+            })}
+          </div>
         </div>
-        <a
-          className="fixed bottom-8 drop-shadow-xl text-lg flex flex-row items-center justify-center align-middle px-4 py-2 my-2 bg-black rounded-full"
-          href={url}
-        >
-          <Image
-            height="32px"
-            width="32px"
-            src="/Spotify_Icon_RGB_Green.png"
-            alt="Spotify Logo"
-          ></Image>
-          <span className="font-thin ml-2">Open on Spotify</span>
-        </a>
       </div>
+      {/* <a
+        className="text-white fixed bottom-8 drop-shadow-xl text-lg flex flex-row items-center justify-center align-middle px-4 py-2 my-2 bg-black rounded-full"
+        href={url}
+      >
+        <Image
+          height="32px"
+          width="32px"
+          src="/Spotify_Icon_RGB_Green.png"
+          alt="Spotify Logo"
+        ></Image>
+        <span className="font-thin ml-2">Open on Spotify</span>
+      </a> */}
     </div>
   );
 };
@@ -124,16 +210,48 @@ export const getStaticProps: GetStaticProps = async (context) => {
 
   const song = await res.json();
 
+  console.log(song);
+
   const data: songData = {
     name: song?.name,
-    artist: song?.artists[0]?.name,
+    artists: [],
     img: song?.album?.images[0]?.url,
     url: song?.external_urls?.spotify,
     uri: id as string,
+    album: {
+      name: song?.album?.name,
+      totalTracks: song?.album?.total_tracks,
+      trackNumber: song?.track_number,
+      id: song?.album?.id,
+      releaseDate: song?.album?.release_date,
+    },
   };
 
-  console.log(data);
+  if (song?.artists?.length) {
+    for (let i = 0; i < song?.artists?.length; i++) {
+      const artist = await fetch(
+        `https://api.spotify.com/v1/artists/${song?.artists[i]?.id}`,
+        {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: "Bearer " + token,
+            Accept: "application/json",
+          },
+        }
+      );
 
+      const artistData = await artist.json();
+
+      data.artists.push({
+        name: artistData?.name,
+        id: artistData?.id,
+        img: artistData?.images[0].url,
+      });
+    }
+  }
+
+  console.log(data);
   return {
     props: {
       ...data,
