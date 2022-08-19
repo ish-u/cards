@@ -2,12 +2,9 @@ import React, { Fragment, useState, useEffect, useContext } from "react";
 import { HexColorPicker } from "react-colorful";
 import { AppContext } from "../context/context";
 import { motion, AnimatePresence } from "framer-motion";
-const GradientPicker = () => {
-  const variants = {
-    open: { opacity: 1, x: 0 },
-    closed: { opacity: 0, x: "-100%" },
-  };
+import { ActionType } from "../context/reducer";
 
+const GradientPicker = () => {
   const { state, dispatch } = useContext(AppContext);
   const [startColor, setStartColor] = useState(state.startColor);
   const [endColor, setEndcolor] = useState(state.endColor);
@@ -23,6 +20,15 @@ const GradientPicker = () => {
       animation: "Animation 10s ease infinite",
     });
   }, [startColor, endColor]);
+
+  useEffect(() => {
+    setStyle({
+      background: `linear-gradient(to right,${state.startColor}, ${state.endColor})`,
+      animation: "Animation 10s ease infinite",
+    });
+    setStartColor(state.startColor);
+    setEndcolor(state.endColor);
+  }, [state.startColor, state.endColor]);
 
   return (
     <>

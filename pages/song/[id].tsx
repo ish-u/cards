@@ -7,6 +7,8 @@ import { AppContext } from "../../context/context";
 import { ActionType } from "../../context/reducer";
 import { useEffect } from "react";
 import { motion, useScroll } from "framer-motion";
+const ColorThief = require("colorthief");
+import { promises as fs } from "fs";
 
 interface songData {
   name: string;
@@ -25,16 +27,41 @@ interface songData {
     id: string;
     releaseDate: string;
   };
+  start: string;
+  end: string;
 }
 
-const Song = ({ name, artists, img, url, uri, album }: songData) => {
+const rgbToHex = (colors: number[]) =>
+  "#" +
+  colors
+    .map((x) => {
+      const hex = x.toString(16);
+      return hex.length === 1 ? "0" + hex : hex;
+    })
+    .join("");
+
+const Song = ({
+  name,
+  artists,
+  img,
+  url,
+  uri,
+  album,
+  start,
+  end,
+}: songData) => {
   const [showArtist, setShowArtist] = useState(false);
   const { scrollY } = useScroll();
 
   const { state, dispatch } = useContext(AppContext);
 
   useEffect(() => {
+    dispatch({
+      type: ActionType.ChangeColor,
+      payload: { startColor: start, endColor: end },
+    });
     setShowArtist(artists.length === 1);
+    console.log(start, end);
   }, []);
 
   const play = async (id: string, device_id: string) => {
@@ -210,8 +237,6 @@ export const getStaticProps: GetStaticProps = async (context) => {
 
   const song = await res.json();
 
-  console.log(song);
-
   const data: songData = {
     name: song?.name,
     artists: [],
@@ -225,6 +250,8 @@ export const getStaticProps: GetStaticProps = async (context) => {
       id: song?.album?.id,
       releaseDate: song?.album?.release_date,
     },
+    start: "",
+    end: "",
   };
 
   if (song?.artists?.length) {
@@ -251,7 +278,26 @@ export const getStaticProps: GetStaticProps = async (context) => {
     }
   }
 
+  const imageData = await fetch(data.img);
+  const buffer = await imageData.buffer();
+  const file = await fs.writeFile("./image.jpg", buffer);
+  const colorPalette = await ColorThief.getPalette("./image.jpg", 2);
+  data.start = rgbToHex(colorPalette[0]);
+  data.end = rgbToHex(colorPalette[1]);
+  // await fs.writeFile(`./image.jpg`, buffer, async () => {
+  //   console.log("finished downloading!");
+  //   const img = "./image.jpg";
+
+  //   await ColorThief.getPalette(img, 5)
+  //     .then((palette) => {
+  //     })
+  //     .catch((err) => {
+  //       console.log(err);
+  //     });
+  // });
+
   console.log(data);
+
   return {
     props: {
       ...data,
