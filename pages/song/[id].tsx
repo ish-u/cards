@@ -279,8 +279,9 @@ export const getStaticProps: GetStaticProps = async (context) => {
   }
 
   const imageData = await fetch(data.img);
-  const buffer = await imageData.buffer();
-  const file = await fs.writeFile("./image.jpg", buffer);
+  // const buffer = await imageData.buffer();
+  const buffer = await imageData.arrayBuffer();
+  const file = await fs.writeFile("./image.jpg", Buffer.from(buffer));
   const colorPalette = await ColorThief.getPalette("./image.jpg", 2);
   data.start = rgbToHex(colorPalette[0]);
   data.end = rgbToHex(colorPalette[1]);
